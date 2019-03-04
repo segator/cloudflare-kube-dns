@@ -112,6 +112,18 @@ func main() {
 	flag.StringVar(&cfApiKey,"cloudflare-key","","Cloudflare API Key")
 	flag.StringVar(&cfApiEmail,"cloudflare-mail","","Cloudflare API Email")
 	flag.StringVar(&cfDomain,"cloudflare-domain","","Cloudflare Zone Domain")
+	if cfApiKey =="" {
+		cfApiKey=os.Getenv("CF_API_KEY")
+	}
+	if cfApiEmail =="" {
+		cfApiEmail=os.Getenv("CF_API_MAIL")
+	}
+
+	if cfDomain == "" {
+		cfDomain=os.Getenv("CF_API_DOMAIN")
+	}
+
+
 
 
 

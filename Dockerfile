@@ -10,6 +10,10 @@ FROM alpine:3.9
 COPY --from=builder /app/cloudflare-kube-dns /app/
 WORKDIR /app
 RUN apk add --no-cache ca-certificates
+ENV CF_API_KEY=""
+ENV CF_API_MAIL=""
+ENV CF_API_DOMAIN=""
+
 
 ENTRYPOINT ["/app/cloudflare-kube-dns"]
 CMD ["-h"]

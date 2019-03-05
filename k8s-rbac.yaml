@@ -34,7 +34,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cloudflare-kube-dns
-    namespace: default
+    namespace: kube-system
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -60,7 +60,7 @@ spec:
                 secretKeyRef:
                   name: cloudflare-external-dns-secret
                   key: api
-            - name: CF_API_EMAIL
+            - name: CF_API_MAIL
               valueFrom:
                 secretKeyRef:
                   name: cloudflare-external-dns-secret

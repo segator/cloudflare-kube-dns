@@ -237,8 +237,6 @@ func main() {
 				log.Println("Signal detected, exitting...")
 				loop=false
 			case <-time.After(10 * time.Second):
-				log.Println("loop")
-
 		}
 
 	}

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cloudflare-kube-dns
+  namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -25,6 +26,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   name: cloudflare-kube-dns-viewer
+  namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -38,6 +40,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: cloudflare-kube-dns
+  namespace: kube-system
 spec:
   strategy:
     type: Recreate
@@ -50,6 +53,7 @@ spec:
       containers:
         - name: cloudflare-kube-dns
           image: segator/cloudflare-kube-dns
+          imagePullPolicy: Always
           env:
             - name: CF_API_KEY
               valueFrom:

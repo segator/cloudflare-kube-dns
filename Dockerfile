@@ -14,6 +14,5 @@ ENV CF_API_KEY=""
 ENV CF_API_MAIL=""
 ENV CF_API_DOMAIN=""
 
-
+USER nobody
 ENTRYPOINT ["/app/cloudflare-kube-dns"]
-CMD ["-h"]

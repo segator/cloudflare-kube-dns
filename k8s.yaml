@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: cloudflare-kube-dns
+  namespace: kube-system
 spec:
   strategy:
     type: Recreate
@@ -13,6 +14,7 @@ spec:
       containers:
         - name: cloudflare-kube-dns
           image: segator/cloudflare-kube-dns
+          imagePullPolicy: Always
           env:
             - name: CF_API_KEY
               valueFrom:

@@ -128,15 +128,16 @@ func main() {
 
 
 
-	var kubeconfig *string
+	var kubeconfig string
 	var masterURL string
 	home := homeDir();
 	defaultConfigPath := filepath.Join(home, ".kube", "config")
 	_, err := os.Stat(defaultConfigPath);
 	if home=="" || os.IsNotExist(err) {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+		flag.StringVar(&kubeconfig,"kubeconfig", "", "absolute path to the kubeconfig file")
 	}else{
-		kubeconfig = flag.String("kubeconfig", defaultConfigPath, "(optional) absolute path to the kubeconfig file")	}
+		flag.StringVar(&kubeconfig,"kubeconfig", defaultConfigPath, "(optional) absolute path to the kubeconfig file")
+	}
 
 	flag.StringVar(&masterURL, "master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
 	flag.Parse()
@@ -153,7 +154,7 @@ func main() {
 	}
 
 	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags(masterURL, *kubeconfig)
+	config, err := clientcmd.BuildConfigFromFlags(masterURL, kubeconfig)
 	if err != nil {
 		panic(err.Error())
 	}

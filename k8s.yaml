@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloudflare-kube-dns
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cloudflare-kube-dns
+    spec:
+      containers:
+        - name: cloudflare-kube-dns
+          image: segator/cloudflare-kube-dns
+          env:
+            - name: CF_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-external-dns-secret
+                  key: api
+            - name: CF_API_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-external-dns-secret
+                  key: mail
+            - name: CF_API_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-external-dns-secret
+                  key: domain

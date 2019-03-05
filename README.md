@@ -12,8 +12,15 @@ This app only publish the public IP of nodes that have POD's running  looking th
 This is useful if you are poor like me and try to build your own """load balancer""" using ingress and DNS roud-robin
 
 ```bash
-#create Config Map with cloudflare config
+#create secret with cloudflare config
+kubectl create -n kube-system secret generic cloudflare-external-dns-secret \
+               --from-literal=api=<CF_API_KEY> \
+               --from-literal=mail=<CF_API_MAIL> \
+               --from-literal=domain=<CF_API_DOMAIN>
 
-#Install
-kubectl apply -f ...yml
+#Install (NO RBAC)
+kubectl apply -f https://raw.githubusercontent.com/segator/cloudflare-kube-dns/master/k8s.yaml
+#Install (For RBAC)
+kubectl apply -f https://raw.githubusercontent.com/segator/cloudflare-kube-dns/master/k8s-rbac.yaml
+
 ```

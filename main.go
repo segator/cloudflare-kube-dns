@@ -307,6 +307,9 @@ func getValidIngress(clientset *kubernetes.Clientset, domainsNodeList *domainNod
 				if err != nil {
 					panic(err.Error())
 				}
+				if service.Annotations == nil {
+					service.Annotations = make(map[string]string)
+				}
 				service.Annotations["auto-dns"] = domain
 				service.Annotations["auto-dns-proxy"] = ingress.Annotations["auto-dns-proxy"]
 				services = append(services,*service)

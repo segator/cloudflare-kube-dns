@@ -341,6 +341,11 @@ func getValidServices(clientset *kubernetes.Clientset, domainsNodeList *domainNo
 }
 
 func filterByServiceList(clientset *kubernetes.Clientset,services []corev1.Service,domainsNodeList *domainNodeList) {
+	nodes, err := clientset.CoreV1().Nodes().List(metav1.ListOptions{})
+	if err != nil {
+		panic(err.Error())
+	}
+
 	for _,service:= range services {
 		domainName := service.Annotations["auto-dns"]
 		cfProxy := false
@@ -364,7 +369,15 @@ func filterByServiceList(clientset *kubernetes.Clientset,services []corev1.Servi
 		}
 
 		for _,pod := range pods.Items {
-			if domainName != ""{
+			//Check if node ready
+			nodeReady := true
+			for _, node := range nodes.Items {
+				if node.ObjectMeta.Name==pod.Spec.NodeName && node.Status.Conditions[len(node.Status.Conditions)-1].Type!="Ready" {
+					nodeReady=false
+					break
+				}
+			}
+			if domainName != "" && nodeReady{
 				domainNode := findDomainNode(domainsNodeList.items,domainName)
 				if domainNode == nil {
 					domainNode = &DomainNode{

@@ -372,7 +372,8 @@ func filterByServiceList(clientset *kubernetes.Clientset,services []corev1.Servi
 			//Check if node ready
 			nodeReady := true
 			for _, node := range nodes.Items {
-				if node.ObjectMeta.Name==pod.Spec.NodeName && node.Status.Conditions[len(node.Status.Conditions)-1].Type!="Ready" {
+				readyCondition :=node.Status.Conditions[len(node.Status.Conditions)-1]
+				if node.ObjectMeta.Name==pod.Spec.NodeName && (readyCondition.Type!="Ready" || (readyCondition.Type=="Ready" && readyCondition.Status!="True")) {
 					nodeReady=false
 					break
 				}
